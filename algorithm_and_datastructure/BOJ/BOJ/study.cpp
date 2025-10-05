@@ -1,77 +1,80 @@
+/*
+
+
+*/
 #include <bits/stdc++.h>
 using namespace std;
 
-using graph = vector<vector<int>>;
+int dh[6] = { 0,0,0,0,1,-1 };
+int dx[6] = {1,0,-1,0,0,0};
+int dy[6] = { 0,1,0,-1,0,0 };
+
 
 int main(void) {
 	std::ios::sync_with_stdio(false), std::cin.tie(0);
+
+	int M, N, H;
+	cin >> M >> N >> H;
+	vector<vector<vector<int>>>	Map(H,vector<vector<int>>(N,vector<int>(M)));
+
+	vector<vector<vector<int>>>	vis(H, vector<vector<int>>(N, vector<int>(M)));
+	queue<tuple<int,int,int>> Q_cur;
+
 	
-	int N, M, start;
-	cin >> N >> M >> start;
+	int unripens = 0;
 
-	graph G(N+1);
-	int from, to;
-	for (int i = 0; i < M; i++) {
-		cin >> from >> to;
-		G[from].push_back(to);
-		G[to].push_back(from);
-	}
-
-	//DFS
-	stack<pair<int, vector<int>>> s;
-	vector<bool> svis(N+1);
-	svis[start] = true;
-	s.push({ start,G[start] });
-	while (!s.empty()) {
-		pair<int,vector<int>> curpos = s.top(); s.pop();
-		int curv = curpos.first;
-		vector<int> cur = curpos.second;
-		if (svis[curv]&&start!=curv)
-			continue;
-		svis[curv] = true;
-		std::cout << curv << " ";
-		sort(cur.begin(), cur.end(),greater<int>());
-		for (int i = 0; i < cur.size(); i++) {
-			int moveto = cur[i];
-			if (svis[moveto]) {
-				continue;
-			}
-			else {
-				
-				s.push({ moveto,G[moveto] });
+	for (int h = 0; h < H;h++) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				cin >> Map[h][i][j];
+				if (Map[h][i][j] == 1) {
+					vis[h][i][j] = true;
+					Q_cur.push({ h,i,j });
+				}
+				else if (Map[h][i][j] == 0) {
+					unripens++;
+				}
+				else {
+					vis[h][i][j] = true;
+				}
 			}
 		}
 	}
-	std::cout << '\n';
+	int day = 0;
+	stack<tuple<int, int, int>> Q_next;
+	while (!Q_cur.empty()) {
+		tuple<int, int, int> cur = Q_cur.front(); Q_cur.pop();
 
-	//BFS
-	queue<pair<int, vector<int>>> q;
-	vector<bool> vis(N + 1);
-	vis[start] = true;
-	//std::cout << start << " ";
-	q.push({ start,G[start] });
-	while (!q.empty()) {
-		pair<int, vector<int>> curpos = q.front(); q.pop();
-		int curv = curpos.first;
-		vector<int> cur = curpos.second;
-		if (vis[curv] && start != curv)
-			continue;
-		vis[curv] = true;
-		std::cout << curv << " ";
-		sort(cur.begin(), cur.end());
-		for (int i = 0; i < cur.size(); i++) {
-			int moveto = cur[i];
-			if (vis[moveto]) {
-				continue;
+		for (int i = 0; i < 6; i++) {
+			int nh = get<0>(cur) + dh[i];
+			int nx = get<1>(cur) + dx[i];
+			int ny = get<2>(cur) + dy[i];
+			if (nx < 0 || nx >= N || ny < 0 || ny >= M||nh<0||nh>=H) continue;
+			if (vis[nh][nx][ny]) continue;
+			unripens--;
+			vis[nh][nx][ny] = true;
+			Q_next.push({ nh,nx,ny });
+		}
+
+
+		if (Q_cur.empty()) {
+			int nextlen = Q_next.size();
+			for (int i = 0; i < nextlen; i++) {
+				Q_cur.push(Q_next.top()); Q_next.pop();
 			}
-			else {
-
-				q.push({ moveto,G[moveto] });
+			day++;
+			if (Q_cur.empty()) {
+				day--;
 			}
 		}
 	}
-	std::cout << '\n';
-
+	if (!unripens)
+	{
+		cout << day;
+	}
+	else
+		cout << -1;
+	
 
 
 	return 0;

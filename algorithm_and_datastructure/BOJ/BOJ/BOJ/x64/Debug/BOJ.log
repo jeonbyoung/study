@@ -1,3 +1,8 @@
 ﻿  study.cpp
-C:\Users\jbh03\study\algorithm_and_datastructure\BOJ\BOJ\study.cpp(61,16): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\jbh03\study\algorithm_and_datastructure\BOJ\BOJ\study.cpp(31,17): warning C4244: '인수': '__int64'에서 '_Ty'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\jbh03\study\algorithm_and_datastructure\BOJ\BOJ\study.cpp(31,17): warning C4244:         with
+C:\Users\jbh03\study\algorithm_and_datastructure\BOJ\BOJ\study.cpp(31,17): warning C4244:         [
+C:\Users\jbh03\study\algorithm_and_datastructure\BOJ\BOJ\study.cpp(31,17): warning C4244:             _Ty=int
+C:\Users\jbh03\study\algorithm_and_datastructure\BOJ\BOJ\study.cpp(31,17): warning C4244:         ]
+C:\Users\jbh03\study\algorithm_and_datastructure\BOJ\BOJ\study.cpp(23,12): warning C4101: 'n' :참조되지 않은 지역 변수입니다.
   BOJ.vcxproj -> C:\Users\jbh03\study\algorithm_and_datastructure\BOJ\BOJ\x64\Debug\BOJ.exe

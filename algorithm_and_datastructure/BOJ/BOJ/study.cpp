@@ -1,56 +1,46 @@
-
+/*
+	BOJ11053
+*/
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<vector<pair<int, int>>> tree(100001);
-vector<bool> vis(100001);
+int dp[1000];
 
 int main() {
-	ios::sync_with_stdio(0);cin.tie(0);
+	int length;
+	cin >> length;
+	int* arr = new int[length];
 
-	int V;
-	cin >> V;
-
-	for (int i = 1; i <= V; i++) {
-		int vertex, weight;
-		cin >> vertex >> weight;
-		if (vertex == -1)
-			break;
-		tree[i].push_back({ vertex, weight });
-	}
-	
-	vector<int> candidates;
-	for (int i = 1; i <= V; i++) {
-		if (tree[i].size() == 1) {
-			candidates.push_back(i);
-		}
+	for (int i = 0; i < length; i++) {
+		cin >> arr[i];
 	}
 
-	vector<int> whosthebest;
-	for (int i = 0; i < candidates.size(); i++) {
-		stack<vector<pair<int, int>>> S;
-		vis.assign(V + 1, false);
-		int sum = 0;
-
-		S.push(tree[candidates[i]]);
-		vis[candidates[i]] = true;
-		while (!S.empty()) {
-			vector<pair<int, int>> cur = S.top(); S.pop();
-			for (int j = 0; j < cur.size(); j++) {
-				if (vis[cur[j].first])
-					continue;
-				else {
-					S.push(tree[cur[j].first]);
-
-				}
-					
-					
+	dp[0] = 1;
+	for (int i = 1; i < length; i++) {
+		vector<int> collections;
+		for (int j = 0; j < i; j++) {
+			if (arr[i] > arr[j]) {
+				collections.push_back(dp[j]);
 			}
 		}
-
-
+		if (!collections.empty()) {
+			auto it = max_element(collections.begin(), collections.end());
+			dp[i] = *it + 1;
+		}
+		else {
+			dp[i] = 1;
+		}
+	}
+	int max = 0;
+	for (int i = 0; i < length;i++) {
+		if (dp[i] > max)
+			max = dp[i];
 	}
 
+	cout << max;
+
+
+	delete[] arr;
 
 	return 0;
 }
